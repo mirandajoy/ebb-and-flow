@@ -1,9 +1,18 @@
 :root {
-  font-family: "Vollkorn", serif;
+  font-family: "Tajawal", serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --primary-background-color: #121a1e;
+  --secondary-background-color: #2f434e;
+  --secondary-background-color-transparent: #2f434ec7;
+  --primary-background-color-light: #f6f6f6;
+  --secondary-background-color-light: #abb3b8;
+  --font-color-dark: #000000;
+  --font-color-light: #ffffff;
+  --highlight-color: #f6d55d;
 }
 
 * {
