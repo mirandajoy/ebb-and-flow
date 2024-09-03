@@ -10,6 +10,7 @@ const props = defineProps(['id', 'label', 'clickEvent', 'active'])
 
 <style>
 button {
+    background-color: var(--primary-background-color-light);
     border-radius: 50px;
     padding: 0.6em 1.2em;
     font-size: 1em;
@@ -20,17 +21,16 @@ button {
 }
 
 button:hover {
-    background-color: #2b2b2b;
+    background-color: var(--secondary-background-color);
     color: white;
-    outline: 1px solid rgb(255, 217, 63);
+    outline: 1px solid var(--font-color-dark);
 }
 
-button:focus,
 button:focus-visible {
-    outline: 1px solid rgb(255, 217, 63);
+    outline: 1px solid var(--font-color-dark);
 }
 
 .active {
-    background-color: #989898;
+    background-color: var(--secondary-background-color-light);
 }
 </style>
