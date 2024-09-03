@@ -7,7 +7,7 @@ export const useThemeStore = defineStore("theme", () => {
   const activeTheme = ref(themeOptions[0]);
 
   const changeTheme = (newTheme) => {
-    theme.value = newTheme;
+    activeTheme.value = newTheme;
   };
 
   return {

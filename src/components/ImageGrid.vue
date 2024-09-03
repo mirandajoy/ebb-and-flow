@@ -1,13 +1,14 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineProps, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import axios from 'axios';
+import { useThemeStore } from "../stores/theme.js"
+const store = useThemeStore();
 const unsplashKey = import.meta.env.VITE_UNSPLASH_KEY;
-const props = defineProps(['activeTheme'])
 const activeThemeSubOption = ref(null)
 const imageStore = new Map();
 const images = ref(null)
 const getImages = async (keyword, themeSubOption) => {
-    const themeId = `${props.activeTheme.id}${themeSubOption}`
+    const themeId = `${store.activeTheme.id}${themeSubOption}`
     if (imageStore.has(themeId)) {
         const updatedImages = imageStore.get(themeId)
         images.value = updatedImages.data
@@ -24,20 +25,20 @@ const getImages = async (keyword, themeSubOption) => {
     }
 }
 const rotateImages = () => {
-    const newSubOption = activeThemeSubOption.value === props.activeTheme.themeSubOption.length - 1 ? 0 : activeThemeSubOption.value + 1
-    getImages(props.activeTheme.themeSubOption[newSubOption].keyword, newSubOption)
+    const newSubOption = activeThemeSubOption.value === store.activeTheme.themeSubOption.length - 1 ? 0 : activeThemeSubOption.value + 1
+    getImages(store.activeTheme.themeSubOption[newSubOption].keyword, newSubOption)
 }
 onMounted(() => {
-    getImages(props.activeTheme.themeSubOption[0].keyword, 0)
+    getImages(store.activeTheme.themeSubOption[0].keyword, 0)
     const interval = setInterval(rotateImages, 6000);
     onBeforeUnmount(() => {
         clearInterval(interval);
     });
 })
 watch(
-    () => props.activeTheme,
+    () => store.activeTheme,
     (newValue, oldValue) => {
-        getImages(props.activeTheme.themeSubOption[0].keyword, 0)
+        getImages(store.activeTheme.themeSubOption[0].keyword, 0)
         activeThemeSubOption.value = 0
     }
 );
@@ -56,7 +57,7 @@ watch(
 }
 
 .image {
-    height: 12rem;
+    width: calc(25% - (1.5rem / 4));
     aspect-ratio: 4 / 3;
     object-position: center;
     object-fit: cover;
