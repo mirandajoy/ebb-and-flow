@@ -28,8 +28,8 @@ const rotateImages = () => {
     getImages(props.activeTheme.themeSubOption[newSubOption].keyword, newSubOption)
 }
 onMounted(() => {
-    //getImages(props.activeTheme.themeSubOption[0].keyword, 0)
-    //const interval = setInterval(rotateImages, 6000);
+    getImages(props.activeTheme.themeSubOption[0].keyword, 0)
+    const interval = setInterval(rotateImages, 6000);
     onBeforeUnmount(() => {
         clearInterval(interval);
     });
