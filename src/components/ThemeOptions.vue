@@ -22,5 +22,6 @@ const updateTheme = (id) => {
     display: flex;
     gap: 0.5rem;
     justify-content: center;
+    padding-top: 0.5rem;
 }
 </style>
