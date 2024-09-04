@@ -8,9 +8,7 @@ const props = defineProps(['activeThemeName'])
 <template>
     <header class="header">
         <div class="inner-container">
-            <h3 class="logo">Ebb & Flow <span class="mini-text">with the</span> <span class="highlight">{{
-                store.activeTheme.categoryName
-                    }}</span>
+            <h3 class="logo">Ebb & Flow
             </h3>
         </div>
         <ThemeOptions />
@@ -25,14 +23,15 @@ const props = defineProps(['activeThemeName'])
     padding-right: 2rem;
     box-sizing: border-box;
     position: fixed;
+    z-index: 1;
 }
 
 .inner-container {
-    background-color: var(--secondary-background-color-transparent);
-    border-bottom-right-radius: 20px;
+    background-color: var(--primary-background-color-light-transparent);
     height: 100%;
-    width: fit-content;
-    padding: 1.5rem 8rem 1rem 2rem;
+    width: 20%;
+    padding: 1rem 2rem 0.5rem 2rem;
+    border-bottom-right-radius: 100px;
 }
 
 .logo {

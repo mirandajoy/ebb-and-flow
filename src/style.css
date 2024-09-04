@@ -9,10 +9,11 @@
   --secondary-background-color: #2f434e;
   --secondary-background-color-transparent: #2f434ec7;
   --primary-background-color-light: #f6f6f6;
+  --primary-background-color-light-transparent: #f6f6f64f;
   --secondary-background-color-light: #abb3b8;
   --font-color-dark: #000000;
   --font-color-light: #ffffff;
-  --highlight-color: #f6d55d;
+  --highlight-color: #56872f;
 }
 
 * {
