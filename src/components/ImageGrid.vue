@@ -11,7 +11,7 @@ const getImages = async (themeSubOption) => {
     const theme = store.activeTheme.categoryName.toLowerCase()
     const subtheme = store.activeTheme.themeSubOption[themeSubOption].keyword
     try {
-        const response = await axios.get(`http://127.0.0.1:5000/images?theme=${theme}&subtheme=${subtheme}`, {
+        const response = await axios.get(`https://ebb-and-flow-defd563052e0.herokuapp.com/images?theme=${theme}&subtheme=${subtheme}`, {
             responseType: 'arraybuffer'
         });
 
