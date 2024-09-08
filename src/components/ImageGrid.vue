@@ -1,35 +1,48 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import axios from 'axios';
-import { useThemeStore } from "../stores/theme.js"
+import JSZip from 'jszip';
+import { useThemeStore } from "../stores/theme.js";
 const store = useThemeStore();
-const unsplashKey = import.meta.env.VITE_UNSPLASH_KEY;
 const activeThemeSubOption = ref(null)
-const imageStore = new Map();
-const images = ref(null)
-const getImages = async (keyword, themeSubOption) => {
-    const themeId = `${store.activeTheme.id}${themeSubOption}`
-    if (imageStore.has(themeId)) {
-        const updatedImages = imageStore.get(themeId)
-        images.value = updatedImages.data
-        activeThemeSubOption.value = themeSubOption
-        return
-    }
+const images = ref([]);
+const error = ref(null);
+const getImages = async (themeSubOption) => {
+    const theme = store.activeTheme.categoryName.toLowerCase()
+    const subtheme = store.activeTheme.themeSubOption[themeSubOption].keyword
     try {
-        const res = await axios.get(`https://api.unsplash.com//photos/random?Accept-Version:=v1&content_filter=high&count=30&client_id=${unsplashKey}&query=${keyword}`)
-        images.value = res.data
-        activeThemeSubOption.value = themeSubOption
-        imageStore.set(themeId, res);
+        const response = await axios.get(`http://127.0.0.1:5000/images?theme=${theme}&subtheme=${subtheme}`, {
+            responseType: 'arraybuffer'
+        });
+
+        const zip = await JSZip.loadAsync(response.data);
+        const imageFiles = [];
+
+        for (const filename in zip.files) {
+            if (zip.files[filename].name.match(/\.(png|jpg|jpeg|gif)$/)) {
+                const file = await zip.files[filename].async('base64');
+                const imageSrc = `data:image/jpeg;base64,${file}`;
+                imageFiles.push(imageSrc);
+            }
+        }
+
+        if (imageFiles.length === 0) {
+            error.value = 'No images found matching the keyword.';
+        } else {
+            images.value = imageFiles;
+            activeThemeSubOption.value = themeSubOption;
+        }
     } catch (err) {
-        console.log(err)
+        error.value = 'Failed to fetch images or no images found.';
+        console.error(err);
     }
-}
+};
 const rotateImages = () => {
     const newSubOption = activeThemeSubOption.value === store.activeTheme.themeSubOption.length - 1 ? 0 : activeThemeSubOption.value + 1
-    getImages(store.activeTheme.themeSubOption[newSubOption].keyword, newSubOption)
+    getImages(newSubOption)
 }
 onMounted(() => {
-    getImages(store.activeTheme.themeSubOption[0].keyword, 0)
+    getImages(0)
     const interval = setInterval(rotateImages, 10000);
     onBeforeUnmount(() => {
         clearInterval(interval);
@@ -38,14 +51,14 @@ onMounted(() => {
 watch(
     () => store.activeTheme,
     (newValue, oldValue) => {
-        getImages(store.activeTheme.themeSubOption[0].keyword, 0)
+        getImages(0)
         activeThemeSubOption.value = 0
     }
 );
 </script>
 <template>
-    <div class="grid">
-        <img v-if="images" v-for="image in images.slice(0, 12)" :src="image.urls.small" class="image" />
+    <div v-if="images.length" class="grid">
+        <img v-for="(src, index) in images" :key="index" :src="src" alt="Image" class="image" />
     </div>
     <p class="instructions instructions-start">Breathe in...</p>
     <p class="instructions instructions-end">Breathe out</p>

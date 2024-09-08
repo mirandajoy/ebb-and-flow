@@ -20,8 +20,8 @@ export const themeOptions = [
       },
       {
         id: 4,
-        name: "Wind",
-        keyword: "wind",
+        name: "Air",
+        keyword: "air",
       },
     ],
   },
